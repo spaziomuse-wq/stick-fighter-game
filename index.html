@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>火柴人格斗 - 竹林传说</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <!-- 主菜单 -->
+        <div id="mainMenu" class="screen active">
+            <h1 class="gameTitle">🔥 竹林传说 🔥</h1>
+            <h2 class="subtitle">STICK FIGHTER LEGENDS</h2>
+            <div class="menuButtons">
+                <button id="startBtn" class="menuBtn">开始游戏</button>
+                <button id="helpBtn" class="menuBtn">操作说明</button>
+            </div>
+        </div>
+
+        <!-- 角色选择 -->
+        <div id="characterSelect" class="screen">
+            <h2 class="screenTitle">选择你的角色</h2>
+            <div id="characterGrid" class="characterGrid"></div>
+            <div id="characterInfo" class="characterInfo">
+                <div class="infoLeft">
+                    <div id="previewCanvas" class="previewCanvas"></div>
+                </div>
+                <div class="infoRight">
+                    <h3 id="charName">--</h3>
+                    <p id="charDesc">--</p>
+                    <div class="stats">
+                        <div class="stat"><span>速度</span><div class="statBar"><div id="statSpeed"></div></div></div>
+                        <div class="stat"><span>攻击</span><div class="statBar"><div id="statAttack"></div></div></div>
+                        <div class="stat"><span>防御</span><div class="statBar"><div id="statDefense"></div></div></div>
+                    </div>
+                    <p id="charSkill">绝技: --</p>
+                </div>
+            </div>
+            <button id="confirmCharBtn" class="menuBtn" disabled>确认选择</button>
+            <button id="backToMenuBtn" class="menuBtn secondary">返回</button>
+        </div>
+
+        <!-- 难度选择 -->
+        <div id="difficultySelect" class="screen">
+            <h2 class="screenTitle">选择难度</h2>
+            <div class="difficultyButtons">
+                <button class="diffBtn" data-diff="easy">
+                    <span class="diffName">🌱 简单</span>
+                    <span class="diffDesc">适合新手练习</span>
+                </button>
+                <button class="diffBtn" data-diff="medium">
+                    <span class="diffName">⚔️ 中等</span>
+                    <span class="diffDesc">正常挑战</span>
+                </button>
+                <button class="diffBtn" data-diff="hard">
+                    <span class="diffName">🔥 困难</span>
+                    <span class="diffDesc">高手对决</span>
+                </button>
+            </div>
+            <button id="backToCharBtn" class="menuBtn secondary">返回</button>
+        </div>
+
+        <!-- 游戏画面 -->
+        <div id="gameScreen" class="screen">
+            <!-- UI层 -->
+            <div id="gameUI" class="gameUI">
+                <!-- 血量条区域 -->
+                <div class="healthBars">
+                    <div class="playerBar left">
+                        <div class="barContainer">
+                            <div class="healthBar">
+                                <div id="p1Health" class="healthFill"></div>
+                                <div id="p1Damage" class="damageFill"></div>
+                            </div>
+                            <div class="energyBar">
+                                <div id="p1Energy" class="energyFill"></div>
+                            </div>
+                        </div>
+                        <div class="playerInfo">
+                            <span id="p1Name" class="playerName">玩家</span>
+                            <div id="p1Avatar" class="avatar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="centerInfo">
+                        <div id="timer" class="timer">60</div>
+                        <div class="vs">VS</div>
+                    </div>
+                    
+                    <div class="playerBar right">
+                        <div class="playerInfo">
+                            <div id="p2Avatar" class="avatar"></div>
+                            <span id="p2Name" class="playerName">电脑</span>
+                        </div>
+                        <div class="barContainer">
+                            <div class="healthBar">
+                                <div id="p2Health" class="healthFill"></div>
+                                <div id="p2Damage" class="damageFill"></div>
+                            </div>
+                            <div class="energyBar">
+                                <div id="p2Energy" class="energyFill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 倒计时 -->
+                <div id="countdown" class="countdown">
+                    <span class="countNum">3</span>
+                </div>
+
+                <!-- 战斗消息 -->
+                <div id="battleMsg" class="battleMsg"></div>
+                
+                <!-- 连击计数 -->
+                <div id="comboDisplay" class="comboDisplay">
+                    <span class="comboNum">0</span>
+                    <span class="comboText">HITS</span>
+                </div>
+            </div>
+
+            <!-- 游戏画布 -->
+            <canvas id="gameCanvas" width="960" height="540"></canvas>
+
+            <!-- 控制说明 -->
+            <div class="controls">
+                <div class="controlGroup">
+                    <span class="key">←→</span><span>移动</span>
+                    <span class="key">↑</span><span>跳跃</span>
+                    <span class="key">Z</span><span>攻击</span>
+                    <span class="key">X</span><span>防御</span>
+                    <span class="key">C</span><span>绝技</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果画面 -->
+        <div id="resultScreen" class="screen">
+            <div class="resultContent">
+                <h2 id="resultTitle" class="resultTitle">--</h2>
+                <div id="winnerDisplay" class="winnerDisplay"></div>
+                <div class="resultStats">
+                    <div class="statItem">
+                        <span class="statLabel">造成伤害</span>
+                        <span id="statDamage" class="statValue">0</span>
+                    </div>
+                    <div class="statItem">
+                        <span class="statLabel">使用绝技</span>
+                        <span id="statSkills" class="statValue">0</span>
+                    </div>
+                    <div class="statItem">
+                        <span class="statLabel">剩余时间</span>
+                        <span id="statTime" class="statValue">0s</span>
+                    </div>
+                </div>
+                <div class="resultButtons">
+                    <button id="playAgainBtn" class="menuBtn">再来一局</button>
+                    <button id="returnMenuBtn" class="menuBtn secondary">返回主菜单</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作说明弹窗 -->
+        <div id="helpModal" class="modal">
+            <div class="modalContent">
+                <h3>操作说明</h3>
+                <div class="helpContent">
+                    <div class="helpSection">
+                        <h4>基础操作</h4>
+                        <p><span class="key">← →</span> 左右移动</p>
+                        <p><span class="key">↑</span> 跳跃 (可二段跳)</p>
+                        <p><span class="key">Z</span> 普通攻击 (可连击)</p>
+                        <p><span class="key">X</span> 防御 (减少60%伤害)</p>
+                        <p><span class="key">C</span> 绝技 (需满能量)</p>
+                    </div>
+                    <div class="helpSection">
+                        <h4>游戏规则</h4>
+                        <p>• 击败对手或时间结束时血量高者获胜</p>
+                        <p>• 攻击和被攻击都会积累能量</p>
+                        <p>• 能量满时可释放强力绝技</p>
+                        <p>• 每场战斗限时60秒</p>
+                    </div>
+                </div>
+                <button id="closeHelpBtn" class="menuBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/fighter.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
