@@ -51,6 +51,10 @@ class Game {
         this.canvas = document.getElementById('gameCanvas');
         this.ctx = this.canvas.getContext('2d');
         
+        // 自适应屏幕
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
+        
         // 初始化背景
         this.initBackground();
         
@@ -66,6 +70,22 @@ class Game {
         });
         
         console.log('Game initialized');
+    }
+    
+    // 画布自适应
+    resizeCanvas() {
+        const container = document.getElementById('gameContainer');
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile && screen.orientation && screen.orientation.type.includes('landscape')) {
+            // 移动端横屏：全屏
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight - 100; // 留出控制按钮空间
+        } else {
+            // 桌面端：固定比例
+            this.canvas.width = 960;
+            this.canvas.height = 540;
+        }
     }
     
     // 初始化背景

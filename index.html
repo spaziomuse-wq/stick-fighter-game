@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>火柴人格斗 - 竹林传说</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -124,13 +124,30 @@
             <canvas id="gameCanvas" width="960" height="540"></canvas>
 
             <!-- 控制说明 -->
-            <div class="controls">
+            <div class="controls desktop-only">
                 <div class="controlGroup">
                     <span class="key">←→</span><span>移动</span>
                     <span class="key">↑</span><span>跳跃</span>
                     <span class="key">Z</span><span>攻击</span>
                     <span class="key">X</span><span>防御</span>
                     <span class="key">C</span><span>绝技</span>
+                </div>
+            </div>
+            
+            <!-- 移动端虚拟控制器 -->
+            <div class="mobile-controls">
+                <!-- 方向键 -->
+                <div class="mobile-dpad">
+                    <button class="dpad-btn dpad-up" data-key="ArrowUp">↑</button>
+                    <button class="dpad-btn dpad-left" data-key="ArrowLeft">←</button>
+                    <button class="dpad-btn dpad-right" data-key="ArrowRight">→</button>
+                </div>
+                
+                <!-- 动作按钮 -->
+                <div class="mobile-actions">
+                    <button class="action-btn btn-block" data-key="x">防御</button>
+                    <button class="action-btn btn-attack" data-key="z">攻击</button>
+                    <button class="action-btn btn-skill" data-key="c">绝技</button>
                 </div>
             </div>
         </div>

@@ -565,6 +565,174 @@ body {
     font-weight: bold;
 }
 
+/* ==================== 移动端控制 ==================== */
+.desktop-only {
+    display: block;
+}
+
+.mobile-controls {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 0 20px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.mobile-dpad {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 150px;
+    height: 150px;
+    pointer-events: auto;
+}
+
+.dpad-btn {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: all 0.1s ease;
+}
+
+.dpad-btn:active {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(0.95);
+}
+
+.dpad-up {
+    top: 0;
+    left: 45px;
+}
+
+.dpad-left {
+    bottom: 0;
+    left: 0;
+}
+
+.dpad-right {
+    bottom: 0;
+    right: 0;
+}
+
+.mobile-actions {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+.action-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease;
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.btn-block {
+    background: linear-gradient(135deg, #4488ff, #44aaff);
+}
+
+.btn-attack {
+    background: linear-gradient(135deg, #ff4444, #ff8844);
+    width: 80px;
+    height: 80px;
+}
+
+.btn-skill {
+    background: linear-gradient(135deg, #ff00ff, #8800ff);
+}
+
+/* 移动设备适配 */
+@media screen and (max-width: 768px) {
+    #gameContainer {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+    
+    .mobile-controls {
+        display: block;
+    }
+    
+    .gameUI {
+        padding: 10px;
+    }
+    
+    .healthBars {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+    }
+    
+    .barContainer {
+        width: 40vw;
+    }
+    
+    .timer {
+        font-size: 28px;
+    }
+    
+    .playerName {
+        font-size: 14px;
+    }
+    
+    .avatar {
+        width: 30px;
+        height: 30px;
+    }
+    
+    /* 竖屏提示 */
+    @media screen and (orientation: portrait) {
+        #gameScreen::before {
+            content: "请横屏游玩";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 20px;
+            z-index: 1000;
+        }
+    }
+}
+
 /* ==================== 结果画面 ==================== */
 #resultScreen {
     background: rgba(0, 0, 0, 0.9);

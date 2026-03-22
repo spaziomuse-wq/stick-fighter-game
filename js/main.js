@@ -15,8 +15,101 @@ document.addEventListener('DOMContentLoaded', () => {
     // 初始化UI
     initUI();
     
+    // 初始化移动端控制
+    initMobileControls();
+    
     console.log('火柴人格斗游戏已加载');
 });
+
+// 移动端触摸控制
+function initMobileControls() {
+    // 检测是否为移动设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (!isMobile && window.innerWidth > 768) {
+        return; // 非移动设备不启用
+    }
+    
+    console.log('移动端控制已启用');
+    
+    // 绑定虚拟按钮触摸事件
+    const dpadButtons = document.querySelectorAll('.dpad-btn');
+    const actionButtons = document.querySelectorAll('.action-btn');
+    
+    // 方向键
+    dpadButtons.forEach(btn => {
+        const key = btn.dataset.key;
+        
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (window.game) {
+                window.game.keys[key] = true;
+            }
+            btn.style.transform = 'scale(0.95)';
+            btn.style.background = 'rgba(255, 255, 255, 0.4)';
+        }, { passive: false });
+        
+        btn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (window.game) {
+                window.game.keys[key] = false;
+            }
+            btn.style.transform = 'scale(1)';
+            btn.style.background = 'rgba(255, 255, 255, 0.2)';
+        }, { passive: false });
+        
+        // 防止鼠标事件触发
+        btn.addEventListener('mousedown', (e) => e.preventDefault());
+    });
+    
+    // 动作按钮
+    actionButtons.forEach(btn => {
+        const key = btn.dataset.key;
+        
+        btn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (window.game) {
+                window.game.keys[key] = true;
+                // 防御按钮需要保持按下状态
+                if (key !== 'x') {
+                    setTimeout(() => {
+                        window.game.keys[key] = false;
+                    }, 100);
+                }
+            }
+            btn.style.transform = 'scale(0.95)';
+        }, { passive: false });
+        
+        btn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (window.game && key === 'x') {
+                // 防御按钮释放
+                window.game.keys[key] = false;
+            }
+            btn.style.transform = 'scale(1)';
+        }, { passive: false });
+        
+        btn.addEventListener('mousedown', (e) => e.preventDefault());
+    });
+    
+    // 防止页面滚动和缩放
+    document.addEventListener('touchmove', (e) => {
+        if (e.target.closest('.mobile-controls')) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+    
+    document.addEventListener('gesturestart', (e) => e.preventDefault());
+    document.addEventListener('gesturechange', (e) => e.preventDefault());
+    document.addEventListener('gestureend', (e) => e.preventDefault());
+    
+    // 尝试锁定横屏
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => {
+            console.log('无法自动锁定横屏');
+        });
+    }
+}
 
 // 初始化UI事件
 function initUI() {
